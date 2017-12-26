@@ -13,7 +13,6 @@ import services.TaskIO;
 import services.DateService;
 import services.TaskService;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
@@ -39,6 +38,8 @@ public class NewEditController {
     private static TableView tableView;
 
     private static Task currentTask;
+
+    private boolean incorrectInputMade;
     @FXML
     private TextField fieldTitle;
     @FXML
@@ -56,7 +57,6 @@ public class NewEditController {
     @FXML
     private CheckBox checkBoxRepeated;
 
-    private Controller mainController;
 
 
     @FXML
@@ -111,10 +111,10 @@ public class NewEditController {
     @FXML
     public void saveChanges(){
         Task collectedFieldsTask = collectFieldsData();
+        if (incorrectInputMade) return;
 
         if (currentTask == null){//no task was chosen -> add button was pressed
             Controller.tasksList.add(collectedFieldsTask);
-            ///////////////////////////////////////////////////////////
         }
         else {
             for (int i = 0; i < Controller.tasksList.size(); i++){
@@ -133,11 +133,13 @@ public class NewEditController {
     }
 
     private Task collectFieldsData(){
+        incorrectInputMade = false;
         Task result = null;
         try {
             result = makeTask();
         }
         catch (RuntimeException e){
+            incorrectInputMade = true;
             try {
                 Stage stage = new Stage();
                 Parent root = FXMLLoader.load(getClass().getResource("/fxml/field-validator.fxml"));
@@ -161,7 +163,6 @@ public class NewEditController {
             Date endDateWithNoTime = DateService.getDateValueFromLocalDate(datePickerEnd.getValue());
             Date newEndDate = DateService.getDateMergedWithTime(txtFieldTimeEnd.getText(), endDateWithNoTime);
             int newInterval = TaskService.parseFromStringToSeconds(fieldInterval.getText());
-            System.out.println(newInterval);
             result = new Task(newTitle, newStartDate,newEndDate, newInterval);
         }
         else {
