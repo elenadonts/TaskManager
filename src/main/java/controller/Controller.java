@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ public class Controller {
     private static ArrayTaskList savedTasks = Main.getSavedTasksList();
 
     public static ObservableList<Task> tasksList = TaskService.getObservableList(savedTasks);
-
+    public static Stage editNewStage;
 
     @FXML
     public  TableView tasks;
@@ -53,25 +54,33 @@ public class Controller {
         tasks.setItems(tasksList);
         NewEditController.setTableView(tasks);
 
+        tasksList.addListener((ListChangeListener.Change<? extends Task> c) -> {
+                updateCountLabel(tasksList);
+                tasks.setItems(tasksList);
+
+            }
+        );
+
     }
     private void updateCountLabel(ObservableList<Task> list){
         labelCount.setText(list.size()+ " elements");
     }
 
+    @FXML
     public void showTaskDialog(ActionEvent actionEvent){
         Object source = actionEvent.getSource();
         NewEditController.setClickedButton((Button) source);
 
         try {
-            Stage stage = new Stage();
-            NewEditController.setCurrentStage(stage);
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/new-edit-task.fxml"));
-            stage.setScene(new Scene(root, 600, 350));
-            stage.setResizable(false);
-            stage.initOwner(Main.primaryStage);
-            stage.initModality(Modality.APPLICATION_MODAL);//??????
+            editNewStage = new Stage();
 
-            stage.show();
+            NewEditController.setCurrentStage(editNewStage);
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/new-edit-task.fxml"));
+            editNewStage.setScene(new Scene(root, 600, 350));
+            editNewStage.setResizable(false);
+            editNewStage.initOwner(Main.primaryStage);
+            editNewStage.initModality(Modality.APPLICATION_MODAL);//??????
+            editNewStage.show();
         }
         catch (IOException e){
             e.getMessage();

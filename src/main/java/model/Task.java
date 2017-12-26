@@ -1,6 +1,8 @@
 package model;
 
 
+import services.TaskIO;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,10 +41,7 @@ public class Task implements Serializable, Cloneable {
         this.title = title;
     }
     public boolean isActive(){
-        if(this.active){
-            return true;
-        }
-        return false;
+        return this.active;
     }
 
     public void setActive(boolean active){

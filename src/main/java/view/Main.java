@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ArrayTaskList;
-import model.TaskIO;
+import services.TaskIO;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ public class Main extends Application {
     private static final int defaultHeight = 520;
 
     private static ArrayTaskList savedTasksList = new ArrayTaskList();
-    private static File savedTasksFile = new File("src/main/resources/data/tasks.txt");
+    public static File savedTasksFile = new File("src/main/resources/data/tasks.txt");
 
     public static ArrayTaskList getSavedTasksList() {
         return savedTasksList;

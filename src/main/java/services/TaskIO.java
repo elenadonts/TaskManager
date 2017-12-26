@@ -1,10 +1,17 @@
-package model;
+package services;
 
+
+import javafx.collections.ObservableList;
+import model.LinkedTaskList;
+import model.Task;
+import model.TaskList;
+import view.Main;
 
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class TaskIO {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss.SSS]");
@@ -99,7 +106,7 @@ public class TaskIO {
 
     }
 
-    public static void read(TaskList tasks, Reader in)  throws IOException {////////////////////////////
+    public static void read(TaskList tasks, Reader in)  throws IOException {
         BufferedReader reader = new BufferedReader(in);
         String line;
         Task t;
@@ -137,7 +144,7 @@ public class TaskIO {
         boolean isRepeated = line.contains("from");//if contains - means repeated
         boolean isActive = !line.contains("inactive");//if doesnt have inactive - means active
         //Task(String title, Date time)   Task(String title, Date start, Date end, int interval)
-        Task result = null;
+        Task result;
         String title = getTitleFromText(line);
         if (isRepeated){
             Date startTime = getDateFromText(line, true);
@@ -232,7 +239,7 @@ public class TaskIO {
 
     ////service methods for writing
     private static String getFormattedTask(Task task){
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         String title = task.getTitle();
         if (title.contains("\"")) title = title.replace("\"","\"\"");
         result.append("\"").append(title).append("\"");
@@ -256,7 +263,7 @@ public class TaskIO {
 
     public static String getFormattedInterval(int interval){
         if (interval <= 0) throw new IllegalArgumentException("Interval <= 0");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         int days = interval/secondsInDay;
         int hours = (interval - secondsInDay*days) / secondsInHour;
@@ -279,4 +286,16 @@ public class TaskIO {
     }
 
 
+    public static void rewriteFile(ObservableList<Task> tasksList) {
+        LinkedTaskList taskList = new LinkedTaskList();
+        for (Task t : tasksList){
+            taskList.add(t);
+        }
+        try {
+            TaskIO.writeBinary(taskList, Main.savedTasksFile);
+        }
+        catch (IOException e){
+            e.getMessage();
+        }
+    }
 }
