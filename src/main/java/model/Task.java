@@ -15,7 +15,7 @@ public class Task implements Serializable, Cloneable {
     private Date end;
     private int interval;
     private boolean active;
-
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public Task(String title, Date time){
         if (time.getTime() < 0) throw new IllegalArgumentException("Time cannot be negative");
         this.title = title;
@@ -108,11 +108,13 @@ public class Task implements Serializable, Cloneable {
         }
         return null;
     }
-
-    public String getFormattedDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date = sdf.format(start);
-        return date;
+    //duplicate methods for TableView which sets column
+    // value by single method and doesn't allow passing parameters
+    public String getFormattedDateStart(){
+        return sdf.format(start);
+    }
+    public String getFormattedDateEnd(){
+        return sdf.format(end);
     }
     public String getFormattedRepeated(){
         if (isRepeated()){

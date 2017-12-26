@@ -26,6 +26,8 @@ public class Controller {
     public static ObservableList<Task> tasksList = TaskService.getObservableList(savedTasks);
     public static Stage editNewStage;
 
+    public static TableView mainTable;
+
     @FXML
     public  TableView tasks;
     @FXML
@@ -36,23 +38,17 @@ public class Controller {
     private TableColumn<Task, String> columnRepeated;
     @FXML
     private Label labelCount;
-    @FXML
-    private DatePicker datePickerFrom;
-    @FXML
-    private TextField fieldTimeFrom;
-    @FXML
-    private DatePicker datePickerTo;
-    @FXML
-    private TextField fieldTimeTo;
+
 
     @FXML
     public void initialize(){
         columnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        columnTime.setCellValueFactory(new PropertyValueFactory<>("formattedDate"));
+        columnTime.setCellValueFactory(new PropertyValueFactory<>("formattedDateStart"));
         columnRepeated.setCellValueFactory(new PropertyValueFactory<>("formattedRepeated"));
         updateCountLabel(tasksList);
         tasks.setItems(tasksList);
-        NewEditController.setTableView(tasks);
+        mainTable = tasks;
+
 
         tasksList.addListener((ListChangeListener.Change<? extends Task> c) -> {
                 updateCountLabel(tasksList);
@@ -73,7 +69,6 @@ public class Controller {
 
         try {
             editNewStage = new Stage();
-
             NewEditController.setCurrentStage(editNewStage);
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/new-edit-task.fxml"));
             editNewStage.setScene(new Scene(root, 600, 350));
@@ -81,6 +76,26 @@ public class Controller {
             editNewStage.initOwner(Main.primaryStage);
             editNewStage.initModality(Modality.APPLICATION_MODAL);//??????
             editNewStage.show();
+        }
+        catch (IOException e){
+            e.getMessage();
+        }
+    }
+    @FXML
+    public void deleteTask(){
+        Task toDelete = (Task)tasks.getSelectionModel().getSelectedItem();
+        tasksList.remove(toDelete);
+    }
+    @FXML
+    public void showDetailedInfo(){
+        try {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/task-info.fxml"));
+            stage.setScene(new Scene(root, 550, 350));
+            stage.setResizable(false);
+            stage.setTitle("Info");
+            stage.initModality(Modality.APPLICATION_MODAL);//??????
+            stage.show();
         }
         catch (IOException e){
             e.getMessage();

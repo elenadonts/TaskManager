@@ -25,9 +25,7 @@ public class NewEditController {
         NewEditController.clickedButton = clickedButton;
     }
 
-    public static void setTableView(TableView tableView) {
-        NewEditController.tableView = tableView;
-    }
+
 
     public static void setCurrentStage(Stage currentStage) {
         NewEditController.currentStage = currentStage;
@@ -35,7 +33,7 @@ public class NewEditController {
 
     private static Stage currentStage;
 
-    private static TableView tableView;
+
 
     private static Task currentTask;
 
@@ -72,10 +70,11 @@ public class NewEditController {
     private void initNewWindow(String title){
         currentStage.setTitle(title);
 
+
     }
     private void initEditWindow(String title){
         currentStage.setTitle(title);
-        currentTask = (Task)tableView.getSelectionModel().getSelectedItem();
+        currentTask = (Task)Controller.mainTable.getSelectionModel().getSelectedItem();
         fieldTitle.setText(currentTask.getTitle());
         datePickerStart.setValue(DateService.getLocalDateValueFromDate(currentTask.getStartTime()));
         txtFieldTimeStart.setText(DateService.getTimeOfTheDayFromDate(currentTask.getStartTime()));/////////////////////////////

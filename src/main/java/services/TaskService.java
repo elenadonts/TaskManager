@@ -35,8 +35,6 @@ public class TaskService {
         String[] units = stringTime.split(":");
         int hours = Integer.parseInt(units[0]);
         int minutes = Integer.parseInt(units[1]);
-//        hours = hours == 0 ? 1 : hours;//
-//        minutes = minutes == 0 ? 1 : minutes;//to prevent multipl by 0
         int result = (hours*60+minutes)*60;
         return result;
     }
