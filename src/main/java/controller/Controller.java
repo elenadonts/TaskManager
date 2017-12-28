@@ -14,10 +14,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.ArrayTaskList;
 import model.Task;
+import model.Tasks;
+import services.DateService;
 import services.TaskService;
 import view.Main;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 public class Controller {
@@ -25,6 +30,7 @@ public class Controller {
 
     public static ObservableList<Task> tasksList = TaskService.getObservableList(savedTasks);
     public static Stage editNewStage;
+    public static Stage infoStage;
 
     public static TableView mainTable;
 
@@ -38,6 +44,15 @@ public class Controller {
     private TableColumn<Task, String> columnRepeated;
     @FXML
     private Label labelCount;
+    @FXML
+    private DatePicker datePickerFrom;
+    @FXML
+    private TextField fieldTimeFrom;
+    @FXML
+    private DatePicker datePickerTo;
+    @FXML
+    private TextField fieldTimeTo;
+
 
 
     @FXML
@@ -53,7 +68,6 @@ public class Controller {
         tasksList.addListener((ListChangeListener.Change<? extends Task> c) -> {
                 updateCountLabel(tasksList);
                 tasks.setItems(tasksList);
-
             }
         );
 
@@ -95,11 +109,37 @@ public class Controller {
             stage.setResizable(false);
             stage.setTitle("Info");
             stage.initModality(Modality.APPLICATION_MODAL);//??????
+            infoStage = stage;
             stage.show();
         }
         catch (IOException e){
             e.getMessage();
         }
+    }
+    @FXML
+    public void showFilteredTasks(){
+        Date start = getDateFromFilterField(datePickerFrom.getValue(), fieldTimeFrom.getText());
+        Date end = getDateFromFilterField(datePickerTo.getValue(), fieldTimeTo.getText());
+        ArrayList<Task> allTasks = new ArrayList<>();
+        allTasks.addAll(tasksList);
+
+        Iterable<Task> filtered = Tasks.incoming(allTasks,start,end);
+        ArrayList<Task> resultList = new ArrayList<>();
+        for (Task t : filtered){
+            resultList.add(t);
+        }
+        ObservableList<Task> observableTasks = FXCollections.observableList(resultList);
+        tasks.setItems(observableTasks);
+        updateCountLabel(observableTasks);
+    }
+    private static Date getDateFromFilterField(LocalDate localDate, String time){
+        Date date = DateService.getDateValueFromLocalDate(localDate);
+        return DateService.getDateMergedWithTime(time, date);
+    }
+    @FXML
+    public void resetFilteredTasks(){
+        tasks.setItems(tasksList);
+
     }
 
 

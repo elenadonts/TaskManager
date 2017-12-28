@@ -162,6 +162,7 @@ public class NewEditController {
             Date endDateWithNoTime = DateService.getDateValueFromLocalDate(datePickerEnd.getValue());
             Date newEndDate = DateService.getDateMergedWithTime(txtFieldTimeEnd.getText(), endDateWithNoTime);
             int newInterval = TaskService.parseFromStringToSeconds(fieldInterval.getText());
+            if (newStartDate.after(newEndDate)) throw new IllegalArgumentException("Start date should be before end");
             result = new Task(newTitle, newStartDate,newEndDate, newInterval);
         }
         else {

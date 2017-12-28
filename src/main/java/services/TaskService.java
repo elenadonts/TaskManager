@@ -8,6 +8,7 @@ import model.Task;
 import java.util.ArrayList;
 
 public class TaskService {
+
     public static ObservableList<Task> getObservableList(ArrayTaskList arrayTaskList){
         ArrayList<Task> tasks = new ArrayList<>();
         for (Task task : arrayTaskList){
@@ -17,9 +18,9 @@ public class TaskService {
     }
     public static String getIntervalInHours(Task task){
         int seconds = task.getRepeatInterval();
-        int minutes = seconds/60;
-        int hours = minutes/60;
-        minutes = minutes%60;
+        int minutes = seconds / DateService.SECONDS_IN_MINUTE;
+        int hours = minutes / DateService.MINUTES_IN_HOUR;
+        minutes = minutes % DateService.MINUTES_IN_HOUR;
         return formTimeUnit(hours) + ":" + formTimeUnit(minutes);//hh:MM
     }
     public static String formTimeUnit(int timeUnit){
@@ -35,7 +36,7 @@ public class TaskService {
         String[] units = stringTime.split(":");
         int hours = Integer.parseInt(units[0]);
         int minutes = Integer.parseInt(units[1]);
-        int result = (hours*60+minutes)*60;
+        int result = (hours * DateService.MINUTES_IN_HOUR + minutes) * DateService.SECONDS_IN_MINUTE;
         return result;
     }
 }

@@ -9,7 +9,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateService {
-
+    public static final int SECONDS_IN_MINUTE = 60;
+    public static final int MINUTES_IN_HOUR = 60;
+    public static final int HOURS_IN_A_DAY = 24;
     public static LocalDate getLocalDateValueFromDate(Date date){//for setting to DatePicker - requires LocalDate
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -22,7 +24,7 @@ public class DateService {
         String[] units = time.split(":");
         int hour = Integer.parseInt(units[0]);
         int minute = Integer.parseInt(units[1]);
-        if (hour > 24 || minute > 60) throw new IllegalArgumentException("time unit exceeds bounds");
+        if (hour > HOURS_IN_A_DAY || minute > MINUTES_IN_HOUR) throw new IllegalArgumentException("time unit exceeds bounds");
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(noTimeDate);
         calendar.set(Calendar.HOUR_OF_DAY, hour);

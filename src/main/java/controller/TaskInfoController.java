@@ -29,7 +29,7 @@ public class TaskInfoController {
     }
     @FXML
     public void closeWindow(){
-
+        Controller.infoStage.close();
     }
 
 }
