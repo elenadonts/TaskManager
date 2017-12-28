@@ -1,10 +1,13 @@
 package view;
 
+import controller.Notificator;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.ArrayTaskList;
 import services.TaskIO;
 
@@ -35,6 +38,11 @@ public class Main extends Application {
         primaryStage.setMinWidth(defaultWidth);
         primaryStage.setMinHeight(defaultHeight);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(we -> {
+                System.exit(0);
+            });
+        new Notificator().start();
     }
 
     public static void main(String[] args) {
