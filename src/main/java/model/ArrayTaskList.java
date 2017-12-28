@@ -1,9 +1,11 @@
 package model;
 
 
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.apache.log4j.Logger;
 
 
 public class ArrayTaskList extends TaskList{
@@ -11,6 +13,7 @@ public class ArrayTaskList extends TaskList{
     private Task[] tasks;
     private int numberOfTasks;
     private int currentCapacity;
+    private static final Logger log = Logger.getLogger(ArrayTaskList.class.getName());
     private class ArrayTaskListIterator implements Iterator<Task> {
         private int cursor;
         private int lastCalled = -1;
@@ -22,6 +25,7 @@ public class ArrayTaskList extends TaskList{
         @Override
         public Task next() {
             if (!hasNext()){
+                log.error("next iterator element doesn't exist");
                 throw new NoSuchElementException("No next element");
             }
             lastCalled = cursor;
@@ -83,7 +87,12 @@ public class ArrayTaskList extends TaskList{
     }
     @Override
     public Task getTask(int index){
-        if (index < 0 || index > size()-1) throw new IndexOutOfBoundsException("Index not found");
+        if (index < 0 || index > size()-1) {
+            log.error("not existing index");
+            throw new IndexOutOfBoundsException("Index not found");
+        }
+
+
         return tasks[index];
     }
 
@@ -103,7 +112,6 @@ public class ArrayTaskList extends TaskList{
             i++;
         }
         return true;
-        //return Arrays.equals(tasks, that.tasks);
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
+import org.apache.log4j.Logger;
 
 public class TaskIO {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss.SSS]");
@@ -19,6 +19,8 @@ public class TaskIO {
     private static final int secondsInDay = 86400;
     private static final int secondsInHour = 3600;
     private static final int secondsInMin = 60;
+
+    private static final Logger log = Logger.getLogger(TaskIO.class.getName());
     public static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(out);
         try {
@@ -74,7 +76,7 @@ public class TaskIO {
             write(tasks,fos);
         }
         catch (IOException e){
-            e.getMessage();
+            log.error("IO exception reading or writing file");
         }
         finally {
             fos.close();
@@ -88,7 +90,7 @@ public class TaskIO {
             read(tasks, fis);
         }
         catch (IOException e){
-            e.getMessage();
+            log.error("IO exception reading or writing file");
         }
         finally {
             fis.close();
@@ -123,7 +125,7 @@ public class TaskIO {
             write(tasks, fileWriter);
         }
         catch (IOException e ){
-            e.getMessage();
+            log.error("IO exception reading or writing file");
         }
         finally {
             fileWriter.close();
@@ -223,7 +225,7 @@ public class TaskIO {
             date = simpleDateFormat.parse(trimmedDate);
         }
         catch (ParseException e){
-            e.getErrorOffset();
+            log.error("date parse exception");
         }
         return date;
 
@@ -295,7 +297,7 @@ public class TaskIO {
             TaskIO.writeBinary(taskList, Main.savedTasksFile);
         }
         catch (IOException e){
-            e.getMessage();
+            log.error("IO exception reading or writing file");
         }
     }
 }

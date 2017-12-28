@@ -4,13 +4,17 @@ package model;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.apache.log4j.Logger;
 
 import static java.util.Objects.isNull;
 
 public class LinkedTaskList  extends TaskList {
+    private static final Logger log = Logger.getLogger(LinkedTaskList.class.getName());
     private class LinkedTaskListIterator implements Iterator<Task>{
         private int cursor;
         private int lastCalled = -1;
+
+
         @Override
         public boolean hasNext() {
             return cursor < numberOfTasks;
@@ -19,6 +23,7 @@ public class LinkedTaskList  extends TaskList {
         @Override
         public Task next() {
             if (!hasNext()){
+                log.error("next iterator element doesn't exist");
                 throw new NoSuchElementException("No next element");
             }
             lastCalled = cursor;
@@ -49,6 +54,7 @@ public class LinkedTaskList  extends TaskList {
     @Override
     public boolean remove(Task task) {
         if (isNull(task)) {
+            log.error("removing task that doesn't exist");
             throw new NullPointerException("Task is null");
         }
 
@@ -74,7 +80,10 @@ public class LinkedTaskList  extends TaskList {
     }
     @Override
     public Task getTask(int index) {
-        if (index < 0 || index > size()-1) throw new IndexOutOfBoundsException("Index not found");
+        if (index < 0 || index > size()-1) {
+            log.error("index doesn't exist");
+            throw new IndexOutOfBoundsException("Index not found");
+        }
         int stepsBack = size()-index-1;
         Node current = last;
         while (stepsBack > 0){

@@ -23,11 +23,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import org.apache.log4j.Logger;
 
 
 public class Controller {
     private static ArrayTaskList savedTasks = Main.getSavedTasksList();
 
+    private static final Logger log = Logger.getLogger(Controller.class.getName());
     public static ObservableList<Task> tasksList = TaskService.getObservableList(savedTasks);
     public static Stage editNewStage;
     public static Stage infoStage;
@@ -57,6 +59,7 @@ public class Controller {
 
     @FXML
     public void initialize(){
+        log.info("Main controller initializing");
         columnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         columnTime.setCellValueFactory(new PropertyValueFactory<>("formattedDateStart"));
         columnRepeated.setCellValueFactory(new PropertyValueFactory<>("formattedRepeated"));
@@ -92,7 +95,7 @@ public class Controller {
             editNewStage.show();
         }
         catch (IOException e){
-            e.getMessage();
+            log.error("Error loading new-edit-task.fxml");
         }
     }
     @FXML
@@ -113,7 +116,7 @@ public class Controller {
             stage.show();
         }
         catch (IOException e){
-            e.getMessage();
+            log.error("error loading task-info.fxml");
         }
     }
     @FXML

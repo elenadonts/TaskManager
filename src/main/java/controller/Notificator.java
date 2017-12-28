@@ -6,12 +6,14 @@ import org.controlsfx.control.Notifications;
 
 
 import java.util.Date;
+import org.apache.log4j.Logger;
 
 public class Notificator extends Thread {
 
     private static final int millisecondsInSec = 1000;
     private static final int secondsInMin = 60;
 
+    private static final Logger log = Logger.getLogger(Notificator.class.getName());
 
     @Override
     public void run() {
@@ -40,17 +42,17 @@ public class Notificator extends Thread {
                 }
 
             }
-
             try {
                 Thread.sleep(millisecondsInSec*secondsInMin);
 
             } catch (InterruptedException e) {
-                e.getMessage();
+                log.error("thread interrupted exception");
             }
             currentDate = new Date();
         }
     }
     public static void showNotification(Task task){
+        log.info("push notification showing");
         Platform.runLater(() -> {
             Notifications.create().title("Task reminder").text("It's time for " + task.getTitle()).showInformation();
         });

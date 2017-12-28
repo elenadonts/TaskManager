@@ -15,17 +15,18 @@ import services.TaskService;
 
 import java.io.IOException;
 import java.util.Date;
+import org.apache.log4j.Logger;
 
 
 public class NewEditController {
 
     private static Button clickedButton;
 
+    private static final Logger log = Logger.getLogger(NewEditController.class.getName());
+
     public static void setClickedButton(Button clickedButton) {
         NewEditController.clickedButton = clickedButton;
     }
-
-
 
     public static void setCurrentStage(Stage currentStage) {
         NewEditController.currentStage = currentStage;
@@ -59,6 +60,7 @@ public class NewEditController {
 
     @FXML
     public void initialize(){
+        log.info("new/edit window initializing");
         switch (clickedButton.getId()){
             case  "btnNew" : initNewWindow("New Task");
                 break;
@@ -69,9 +71,8 @@ public class NewEditController {
     }
     private void initNewWindow(String title){
         currentStage.setTitle(title);
-
-
     }
+
     private void initEditWindow(String title){
         currentStage.setTitle(title);
         currentTask = (Task)Controller.mainTable.getSelectionModel().getSelectedItem();
@@ -148,7 +149,7 @@ public class NewEditController {
                 stage.show();
             }
             catch (IOException ioe){
-                e.getMessage();
+                log.error("error loading field-validator.fxml");
             }
         }
         return result;

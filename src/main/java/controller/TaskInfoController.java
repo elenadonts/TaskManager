@@ -4,9 +4,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import model.Task;
 
+import org.apache.log4j.Logger;
+
 
 public class TaskInfoController {
 
+    private static final Logger log = Logger.getLogger(TaskInfoController.class.getName());
     @FXML
     private Label labelTitle;
     @FXML
@@ -20,6 +23,7 @@ public class TaskInfoController {
 
     @FXML
     public void initialize(){
+        log.info("task info window initializing");
         Task currentTask = (Task)Controller.mainTable.getSelectionModel().getSelectedItem();
         labelTitle.setText("Title: " + currentTask.getTitle());
         labelStart.setText("Start time: " + currentTask.getFormattedDateStart());
