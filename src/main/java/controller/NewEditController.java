@@ -14,6 +14,7 @@ import services.DateService;
 import services.TaskService;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import org.apache.log4j.Logger;
 
@@ -33,8 +34,6 @@ public class NewEditController {
     }
 
     private static Stage currentStage;
-
-
 
     private static Task currentTask;
 
@@ -56,7 +55,9 @@ public class NewEditController {
     @FXML
     private CheckBox checkBoxRepeated;
 
-
+    private static final String DEFAULT_START_TIME = "8:00";
+    private static final String DEFAULT_END_TIME = "10:00";
+    private static final String DEFAULT_INTERVAL_TIME = "0:30";
 
     @FXML
     public void initialize(){
@@ -71,6 +72,8 @@ public class NewEditController {
     }
     private void initNewWindow(String title){
         currentStage.setTitle(title);
+        datePickerStart.setValue(LocalDate.now());
+        txtFieldTimeStart.setText(DEFAULT_START_TIME);
     }
 
     private void initEditWindow(String title){
@@ -78,7 +81,7 @@ public class NewEditController {
         currentTask = (Task)Controller.mainTable.getSelectionModel().getSelectedItem();
         fieldTitle.setText(currentTask.getTitle());
         datePickerStart.setValue(DateService.getLocalDateValueFromDate(currentTask.getStartTime()));
-        txtFieldTimeStart.setText(DateService.getTimeOfTheDayFromDate(currentTask.getStartTime()));/////////////////////////////
+        txtFieldTimeStart.setText(DateService.getTimeOfTheDayFromDate(currentTask.getStartTime()));
 
         if (currentTask.isRepeated()){
             checkBoxRepeated.setSelected(true);
@@ -106,6 +109,10 @@ public class NewEditController {
         datePickerEnd.setDisable(toShow);
         fieldInterval.setDisable(toShow);
         txtFieldTimeEnd.setDisable(toShow);
+
+        datePickerEnd.setValue(LocalDate.now());
+        txtFieldTimeEnd.setText(DEFAULT_END_TIME);
+        fieldInterval.setText(DEFAULT_INTERVAL_TIME);
     }
 
     @FXML

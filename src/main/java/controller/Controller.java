@@ -16,6 +16,7 @@ import model.ArrayTaskList;
 import model.Task;
 import model.Tasks;
 import services.DateService;
+import services.TaskIO;
 import services.TaskService;
 import view.Main;
 
@@ -102,6 +103,7 @@ public class Controller {
     public void deleteTask(){
         Task toDelete = (Task)tasks.getSelectionModel().getSelectedItem();
         tasksList.remove(toDelete);
+        TaskIO.rewriteFile(tasksList);
     }
     @FXML
     public void showDetailedInfo(){

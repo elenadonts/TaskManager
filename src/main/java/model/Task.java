@@ -79,10 +79,7 @@ public class Task implements Serializable, Cloneable {
         return end;
     }
     public int getRepeatInterval(){
-        if(interval > 0){
-            return interval;
-        }
-        return 0;
+        return interval > 0 ? interval : 0;
     }
 
     public void setTime(Date start, Date end, int interval){
@@ -93,10 +90,8 @@ public class Task implements Serializable, Cloneable {
 
     }
     public boolean isRepeated(){
-        if(this.interval == 0){
-            return false;
-        }
-        return true;
+        return !(this.interval == 0);
+
     }
     public Date nextTimeAfter(Date current){
         if (current.after(end) || current.equals(end))return null;

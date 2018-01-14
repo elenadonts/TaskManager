@@ -23,7 +23,9 @@ public class Main extends Application {
     private static final Logger log = Logger.getLogger(Main.class.getName());
 
     private static ArrayTaskList savedTasksList = new ArrayTaskList();
-    public static File savedTasksFile = new File("src/main/resources/data/tasks.txt");
+
+    private static ClassLoader classLoader = Main.class.getClassLoader();
+    public static File savedTasksFile = new File(classLoader.getResource("data/tasks.txt").getFile());
 
     public static ArrayTaskList getSavedTasksList() {
         return savedTasksList;
